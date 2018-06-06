@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.analysis.dao.WxCntDao">
+    <resultMap id="baseMap" type="com.example.analysis.bean.WxCnt">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="event_id" jdbcType="INTEGER" property="eventId" />
+        <result column="use_time" jdbcType="INTEGER" property="useTime" />
+        <result column="use_date" jdbcType="DATE" property="useDate" />
+        <result column="only_id" jdbcType="VARCHAR" property="ownerId"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="baseMap">
+        select * from wx_count where id = #{id}
+    </select>
+
+    <select id="selectCountWithCondition" resultType="map">
+        SELECT event_id , count(*) as pv_cnt , count(DISTINCT user_id) as uv_cnt ,avg(use_time) AS stay_time FROM wx_count WHERE
+        <if test="beginTime != null or endTime != null ">
+            use_date between #{beginTime , jdbcType=DATE} and #{endTime , jdbcType=DATE}
+        </if>
+        <if test="eventId != null and eventId != ''">
+            and event_id = #{eventId}
+        </if>
+        GROUP BY event_id
+    </select>
+
+
+    <select id="analysisUsers" resultType="map">
+        SELECT wx_user.open_id , count(wx_count.event_id) as ar_cnt , avg(wx_count.use_time) AS stay_time FROM wx_count , wx_user WHERE wx_count.user_id = wx_user.id AND
+        <if test="beginTime != null or endTime != null ">
+            wx_count.use_date between #{beginTime , jdbcType=DATE} and #{endTime , jdbcType=DATE}
+        </if>
+        AND wx_count.event_id=0
+        GROUP BY user_id
+    </select>
+
+</mapper>

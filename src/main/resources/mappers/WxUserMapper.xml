@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.analysis.dao.WxUserDao">
+    <resultMap id="baseMap" type="com.example.analysis.bean.WxUser">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="open_id" jdbcType="VARCHAR" property="openId" />
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+        <result column="sex" jdbcType="VARCHAR" property="sex" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="country" jdbcType="VARCHAR" property="country" />
+        <result column="head_img_url" jdbcType="VARCHAR" property="headImgPath" />
+        <result column="company_no" jdbcType="VARCHAR" property="companyNo"/>
+    </resultMap>
+    <resultMap id="Map" type="com.example.analysis.bean.WxUser">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="open_id" jdbcType="VARCHAR" property="openId" />
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+        <result column="sex" jdbcType="VARCHAR" property="sex" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="head_img_url" jdbcType="VARCHAR" property="headImgPath" />
+    </resultMap>
+    <update id="update" parameterType="com.example.analysis.bean.WxUser">
+        UPDATE wx_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="null != openId">open_id = #{openId}</if>
+            <if test="null != nickName">,nick_name = #{nickName}</if>
+            <if test="null != sex">,sex = #{sex}</if>
+            <if test="null != province">,province = #{province}</if>
+            <if test="null != city">,city = #{city}</if>
+            <if test="null != country">,country = #{country}</if>
+            <if test="null != headImgPath">,head_img_url = #{headImgPath}</if>
+            <if test="null != companyNo">,company_no = #{companyNo}</if>
+            where id = #{id}
+        </trim>
+    </update>
+
+    <select id="checkUserRegister" parameterType="string" resultType="boolean">
+        <![CDATA[select count(id) from wx_user where open_id = #{openId}]]>
+    </select>
+
+    <select id="returnWxUserByOpenId" resultMap="baseMap">
+        select id , open_id ,nick_name , head_img_url from wx_user where open_id = #{openId}
+    </select>
+
+    <select id="returnWxUserById" resultMap="baseMap">
+        select * from wx_user where id = #{id}
+    </select>
+    <select id="getAllWxUser" resultMap="Map">
+        select id , open_id , nick_name , sex , city , head_img_url from wx_user
+    </select>
+
+
+    <insert id="insert" parameterType="com.example.analysis.bean.WxUser">
+        insert into wx_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="openId != null">
+                open_id,
+            </if>
+            <if test="companyNo != null">
+                company_no,
+            </if>
+            <if test="nickName != null">
+                nick_name,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="headImgPath != null">
+                head_img_url,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="openId != null">
+                #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="companyNo != null">
+                #{companyNo,jdbcType=VARCHAR},
+            </if>
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="headImgPath != null">
+                #{headImgPath,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+</mapper>
