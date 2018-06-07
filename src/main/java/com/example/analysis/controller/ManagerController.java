@@ -18,7 +18,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@CrossOrigin(origins = "*" , maxAge = 3600)
 @RestController
 @RequestMapping(value = "manager")
 public class ManagerController {
