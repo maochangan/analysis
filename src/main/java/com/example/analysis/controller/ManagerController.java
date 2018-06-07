@@ -5,8 +5,6 @@ import com.example.analysis.service.ManagerService;
 import com.example.analysis.util.AdminUtil;
 import com.example.analysis.util.AppMd5Util;
 import com.example.analysis.util.JsonResult;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,18 +81,18 @@ public class ManagerController {
     }
 
 
-    @RequestMapping(value = "analysis/usersWithPage", method = RequestMethod.GET)
-    public JsonResult usersWithPage(@Param("beginTime")Timestamp beginTime, @Param("endTime")Timestamp endTime, @Param("pSize") Integer pSize , @Param("pn") Integer pn , HttpSession session) {
-        logger.info("用户数据查询API分页查询");
-        PageHelper.startPage(pn , pSize);
-        List<Map<String, Object>> data = managerService.analysisUsers(beginTime, endTime);
-        if (null == data){
-            return JsonResult.fail().add("msg", "no data");
-        }else{
-            PageInfo<Map<String, Object>> pageInfo = new PageInfo<Map<String , Object>>(data);
-            return JsonResult.success().add("pageInfo" , pageInfo);
-        }
-    }
+//    @RequestMapping(value = "analysis/usersWithPage", method = RequestMethod.GET)
+//    public JsonResult usersWithPage(@Param("beginTime")Timestamp beginTime, @Param("endTime")Timestamp endTime, @Param("pSize") Integer pSize , @Param("pn") Integer pn , HttpSession session) {
+//        logger.info("用户数据查询API分页查询");
+//        PageHelper.startPage(pn , pSize);
+//        List<Map<String, Object>> data = managerService.analysisUsers(beginTime, endTime);
+//        if (null == data){
+//            return JsonResult.fail().add("msg", "no data");
+//        }else{
+//            PageInfo<Map<String, Object>> pageInfo = new PageInfo<Map<String , Object>>(data);
+//            return JsonResult.success().add("pageInfo" , pageInfo);
+//        }
+//    }
 
 
 
